@@ -92,6 +92,7 @@ DELTATHETA = 30.0
 
 st.write("hello world")
 st.write(f"{layout_properties_file}")
+st.write(f"contains: {os.listdir(layout_properties_file)}")
 # # Load initial layout properties
 # with open(layout_properties_file, 'r') as file:
 #     layout_properties = yaml.safe_load(file)
