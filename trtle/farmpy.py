@@ -1,4 +1,3 @@
-from trtle import trtlepy
 from shapely.geometry import Point, Polygon
 import pandas as pd
 from data.turbines.iea15mw.iea15mw import IEA15MW
