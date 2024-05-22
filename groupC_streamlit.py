@@ -69,7 +69,7 @@ def plot_wake_map(farm, wdir, wsp):
     local_wake_loss = np.abs(with_wake - without_wake)/without_wake * 1e2
 
     plt.figure()
-    flow_map.plot_wake_map(levels=10, cmap='YlGnBu_r', plot_colorbar=True, plot_windturbines=False, ax=None)
+    flow_map.plot_wake_map(levels=5, cmap='YlGnBu_r', plot_colorbar=True, plot_windturbines=False, ax=None)
     plt.axis('equal')
     plt.xlabel("horizontal [m]")
     plt.ylabel("Northing [m]")
