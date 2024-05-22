@@ -17,8 +17,6 @@ Streamlit App Development for groupC: (Various mooring orientations, with No sha
 def plot_layout(farm):
     N_m = 3
     plt.figure(figsize=(6, 6))
-    farm.anchor_position(N_m)
-
     for i, turbine in enumerate(farm.turbines.values()):
         for j in range(N_m):
             plt.plot([turbine[f"anchor{j}_x"], turbine["x"]], [turbine[f"anchor{j}_y"], turbine["y"]], '-', color='black', linewidth=1.0)
@@ -90,7 +88,6 @@ layout_properties_file = os.path.join(os.path.dirname(__file__), "input_files", 
 VESSEL = 'VolturnUS-S'
 DELTATHETA = 30.0
 
-st.write("hello world")
 # Load initial layout properties
 with open(layout_properties_file, 'r') as file:
     layout_properties = yaml.safe_load(file)
@@ -108,40 +105,62 @@ farm.complex_site()
 aep_without_wake, aep_with_wake, wake_effects = farm.wake_model(watch_circle=False)
 
 # User inputs for coefficients
-Sx = st.number_input(fr"$S_x$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
-Sy = st.number_input(fr"$S_y$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingx"], step=0.1)
-# delta_x_coefficient = st.slider('Delta X Coefficient', -1.0, 1.0, 0.0)
-# delta_y_coefficient = st.slider('Delta Y Coefficient', -1.0, 1.0, 0.0)
-alpha = st.number_input(rf'$\alpha$ (degrees)',
-                        min_value=0.0,
-                        max_value=360.0,
-                        value=float(layout_properties["farm properties"]["orientation"]))
-beta = st.number_input(rf'$\beta$ (degrees)',
-                        min_value=0.0,
-                        max_value=np.rad2deg(np.arctan2(Sy, Sx)),
-                        value=0.0)
-gamma = st.number_input(rf'$\Delta \gamma$ (degrees)',
-                        min_value=0.0,
-                        max_value=360.0,
-                        value=0.0)
 
+# Create two columns
+col1, col2, col3 = st.columns(3)
+
+
+with col1:
+    Sx = st.number_input(fr"$S_x = D_x/D$: Spacing in x-axis (-)", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
+    Sy = st.number_input(fr"$S_y = D_y/D$: Spacing in y-axis (-)", min_value=4.0, max_value=12.0,
+                         value=farm_properties["Dspacingx"], step=0.1)
+with col2:
+    alpha = st.number_input(rf'$\alpha$: farm orientation angle (degrees)',
+                            min_value=0.0,
+                            max_value=360.0,
+                            value=float(layout_properties["farm properties"]["orientation"]))
+    beta = st.number_input(rf'$\beta$: skew angle (degrees)',
+                           min_value=0.0,
+                           max_value=np.rad2deg(np.arctan2(Sy, Sx)),
+                           value=0.0)
+    gamma = st.number_input(rf'$\Delta \gamma$: delta heading angle (degrees)',
+                            min_value=0.0,
+                            max_value=360.0,
+                            value=0.0)
+
+with col3:
+    msr = st.number_input(fr"$R_a$: anchor radius (m)", min_value=0.0, max_value=1400.0,
+                          value=float(farm_properties["mooring line spread radius"]), step=1.0)
+    tbl = st.number_input(fr"$R_b$: turbine-boundary limit (m)", min_value=0.0, max_value=1400.0,
+                          value=float(farm_properties["turbine-boundary limit"]), step=1.0)
 # Update layout based on user input
 layout_properties['farm properties']['Dspacingx'] = Sy
 layout_properties['farm properties']['Dspacingy'] = Sx
 layout_properties["farm properties"]["orientation"] = 90 - alpha
 layout_properties["farm properties"]["skew factor"] = np.tan(np.deg2rad(beta))*farm.spacing_x/farm.spacing_y
+layout_properties["farm properties"]["mooring line spread radius"] = msr
+layout_properties["farm properties"]["turbine-boundary limit"] = tbl
 
 # Commit changes
 # change_center(farm, delta_x_coefficient, delta_y_coefficient)
 farm, aep_with_wake, wake_effects = update_farm(layout_properties)
 change_gamma(farm, gamma)
 
-st.write(f"Turbine Count = {farm.turbine_ct}, Capacity = {15 * farm.turbine_ct} MW")
-st.write(f"AEP: {aep_with_wake:.2f} GWh")
-st.write(f"Total wake loss: {wake_effects:.2f}%")
+
+
+
 
 # Plot the layout
 plot_layout(farm)
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    st.write(f"**Turbine Count** = {farm.turbine_ct}")
+with col2:
+    st.write(f"**Capacity** = {15 * farm.turbine_ct} MW")
+with col3:
+    st.write(f"**AEP**: {aep_with_wake:.2f} GWh")
+with col4:
+    st.write(f"**Total wake loss**: {wake_effects:.2f}%")
 
 # User inputs for wind speed and direction
 # wsp = st.slider('Wind Speed (m/s)',
