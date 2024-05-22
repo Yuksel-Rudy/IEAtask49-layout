@@ -46,8 +46,8 @@ def update_farm(layout_properties):
 
 
 def change_center(farm, delta_x_coefficient, delta_y_coefficient):
-    delta_x = delta_x_coefficient * farm.spacing_x * farm.WTG.diameter()
-    delta_y = delta_y_coefficient * farm.spacing_y * farm.WTG.diameter()
+    delta_x = delta_x_coefficient * farm.WTG.diameter()
+    delta_y = delta_y_coefficient * farm.WTG.diameter()
     for i, turbine in enumerate(farm.turbines.values()):
         new_x = turbine["x"] + delta_x
         new_y = turbine["y"] + delta_y
@@ -114,8 +114,8 @@ with col1:
     Sx = st.number_input(fr"$S_x = D_x/D$: Spacing in x-axis (-)", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
     Sy = st.number_input(fr"$S_y = D_y/D$: Spacing in y-axis (-)", min_value=4.0, max_value=12.0,
                          value=farm_properties["Dspacingx"], step=0.1)
-    delta_x_coefficient = st.slider(fr'$\Delta x/D: center adjustment in x-axis [-]', -1.0, 1.0, 0.0)
-    delta_y_coefficient = st.slider(fr'$\Delta y/D: center adjustment in y-axis [-]', -1.0, 1.0, 0.0)
+    delta_x_coefficient = st.slider(fr'$\Delta x/D$: center adjustment in x-axis [-]', -10.0, 10.0, 0.0)
+    delta_y_coefficient = st.slider(fr'$\Delta y/D$: center adjustment in y-axis [-]', -10.0, 10.0, 0.0)
 with col2:
     alpha = st.number_input(rf'$\alpha$: farm orientation angle (degrees)',
                             min_value=0.0,
