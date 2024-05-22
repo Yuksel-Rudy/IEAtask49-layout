@@ -144,15 +144,15 @@ st.write(f"Total wake loss: {wake_effects:.2f}%")
 plot_layout(farm)
 
 # User inputs for wind speed and direction
-wsp = st.slider('Wind Speed (m/s)',
-                min_value=3.0,
-                max_value=25.0,
-                value=11.0,
-                step=farm.site.ds.ws.__array__()[1] - farm.site.ds.ws.__array__()[0])
-wdir = st.slider('Wind Direction (degrees)',
-                 min_value=0.0,
-                 max_value=360.0,
-                 value=0.0,
-                 step=farm.site.ds.wd.__array__()[1] - farm.site.ds.wd.__array__()[0])
-local_wake_loss = plot_wake_map(farm, wdir, wsp)
-st.write(f"local wake effect = {local_wake_loss}%")
+# wsp = st.slider('Wind Speed (m/s)',
+#                 min_value=3.0,
+#                 max_value=25.0,
+#                 value=11.0,
+#                 step=farm.site.ds.ws.__array__()[1] - farm.site.ds.ws.__array__()[0])
+# wdir = st.slider('Wind Direction (degrees)',
+#                  min_value=0.0,
+#                  max_value=360.0,
+#                  value=0.0,
+#                  step=farm.site.ds.wd.__array__()[1] - farm.site.ds.wd.__array__()[0])
+# local_wake_loss = plot_wake_map(farm, wdir, wsp)
+# st.write(f"local wake effect = {local_wake_loss}%")
