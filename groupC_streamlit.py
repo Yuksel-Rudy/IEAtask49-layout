@@ -10,7 +10,7 @@ import numpy as np
 from trtle.farmpy import Farm
 
 """
-Streamlit App Development for groupC: (Various mooring orientations, with No shared anchors - Layout)
+Streamlit App Development for groupC: (Various mooring orientations, with No shared anchors) - Powered by TRTLE: https://github.com/Yuksel-Rudy/TRTLE
 """
 
 # Define a function to plot the layout
