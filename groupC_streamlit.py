@@ -83,17 +83,9 @@ def plot_wake_map(farm, wdir, wsp):
 # Streamlit app
 st.title("Wind Farm Layout Visualization")
 
-this_dir = os.getcwd()
 TEST_NAME = 'groupC_OPT_st'
-# Directory manager
-example_out_dir = os.path.join(this_dir, "examples_out")
-os.makedirs(example_out_dir, exist_ok=True)
 
-# Create TEST directory
-out_dir = os.path.join(this_dir, example_out_dir, TEST_NAME)
-os.makedirs(out_dir, exist_ok=True)
-
-layout_properties_file = os.path.join(this_dir, "input_files", "groupC", "groupC_Design1_freecap.yaml")
+layout_properties_file = os.path.join(os.path.dirname(__file__), "input_files", "groupC", "groupC_Design1_freecap.yaml")
 
 VESSEL = 'VolturnUS-S'
 DELTATHETA = 30.0
