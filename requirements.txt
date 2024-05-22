@@ -6,5 +6,5 @@ shapely
 pandas
 scipy
 xarray
-PyWake
 py_wake
+git+https://gitlab.windenergy.dtu.dk/TOPFARM/PyWake.git

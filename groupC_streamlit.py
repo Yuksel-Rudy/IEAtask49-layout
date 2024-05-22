@@ -107,6 +107,7 @@ farm = Farm()
 farm.create_layout(layout_type="standard",
                    layout_properties=layout_properties,
                    mooring_orientation="DMO_03",
+                   trtle=None,
                    capacity_constraint=False)
 farm_properties = layout_properties["farm properties"]
 farm.complex_site()
@@ -114,8 +115,8 @@ farm.complex_site()
 aep_without_wake, aep_with_wake, wake_effects = farm.wake_model(watch_circle=False)
 
 # User inputs for coefficients
-Sx = st.number_input(fr"$S_x$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingx"], step=0.1)
-Sy = st.number_input(fr"$S_y$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
+Sx = st.number_input(fr"$S_x$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
+Sy = st.number_input(fr"$S_y$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingx"], step=0.1)
 # delta_x_coefficient = st.slider('Delta X Coefficient', -1.0, 1.0, 0.0)
 # delta_y_coefficient = st.slider('Delta Y Coefficient', -1.0, 1.0, 0.0)
 alpha = st.number_input(rf'$\alpha$ (degrees)',
