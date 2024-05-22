@@ -7,20 +7,7 @@ import numpy as np
 from scipy.interpolate import NearestNDInterpolator
 import xarray as xr
 from py_wake.site import XRSite
-from py_wake.literature.gaussian_models import Bastankhah_PorteAgel_2014, Niayifar_PorteAgel_2016, \
-    Zong_PorteAgel_2020, Blondel_Cathelain_2020
-from py_wake.deficit_models import (NOJDeficit,
-                                    NOJLocalDeficit,
-                                    TurboNOJDeficit,
-                                    BastankhahGaussianDeficit,
-                                    NiayifarGaussianDeficit,
-                                    ZongGaussianDeficit,
-                                    CarbajofuertesGaussianDeficit,
-                                    TurboGaussianDeficit,
-                                    FugaDeficit,
-                                    GCLDeficit,
-                                    NoWakeDeficit
-                                    )
+from py_wake.literature.gaussian_models import Niayifar_PorteAgel_2016
 
 
 class Farm:
