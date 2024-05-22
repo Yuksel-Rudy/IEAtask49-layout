@@ -85,76 +85,74 @@ st.title("Wind Farm Layout Visualization")
 
 TEST_NAME = 'groupC_OPT_st'
 
-layout_properties_file = os.path.join(os.path.dirname(__file__), "input_files", "groupC", "groupC_Design1_freecap.yaml")
+layout_properties_file = os.path.join(os.path.dirname(__file__), "input_files", "groupC", "GroupC_Design1_freecap.yaml")
 
 VESSEL = 'VolturnUS-S'
 DELTATHETA = 30.0
 
 st.write("hello world")
-st.write(f"{layout_properties_file}")
-st.write(f"contains: {os.listdir(os.path.join(os.path.dirname(__file__)))}")
-# # Load initial layout properties
-# with open(layout_properties_file, 'r') as file:
-#     layout_properties = yaml.safe_load(file)
-#
-#
-# farm = Farm()
-# farm.create_layout(layout_type="standard",
-#                    layout_properties=layout_properties,
-#                    mooring_orientation="DMO_03",
-#                    trtle=None,
-#                    capacity_constraint=False)
-# farm_properties = layout_properties["farm properties"]
-# farm.complex_site()
-#
-# aep_without_wake, aep_with_wake, wake_effects = farm.wake_model(watch_circle=False)
-#
-# # User inputs for coefficients
-# Sx = st.number_input(fr"$S_x$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
-# Sy = st.number_input(fr"$S_y$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingx"], step=0.1)
-# # delta_x_coefficient = st.slider('Delta X Coefficient', -1.0, 1.0, 0.0)
-# # delta_y_coefficient = st.slider('Delta Y Coefficient', -1.0, 1.0, 0.0)
-# alpha = st.number_input(rf'$\alpha$ (degrees)',
-#                         min_value=0.0,
-#                         max_value=360.0,
-#                         value=float(layout_properties["farm properties"]["orientation"]))
-# beta = st.number_input(rf'$\beta$ (degrees)',
-#                         min_value=0.0,
-#                         max_value=np.rad2deg(np.arctan2(Sy, Sx)),
-#                         value=0.0)
-# gamma = st.number_input(rf'$\Delta \gamma$ (degrees)',
-#                         min_value=0.0,
-#                         max_value=360.0,
-#                         value=0.0)
-#
-# # Update layout based on user input
-# layout_properties['farm properties']['Dspacingx'] = Sy
-# layout_properties['farm properties']['Dspacingy'] = Sx
-# layout_properties["farm properties"]["orientation"] = 90 - alpha
-# layout_properties["farm properties"]["skew factor"] = np.tan(np.deg2rad(beta))*farm.spacing_x/farm.spacing_y
-#
-# # Commit changes
-# # change_center(farm, delta_x_coefficient, delta_y_coefficient)
-# farm, aep_with_wake, wake_effects = update_farm(layout_properties)
-# change_gamma(farm, gamma)
-#
-# st.write(f"Turbine Count = {farm.turbine_ct}, Capacity = {15 * farm.turbine_ct} MW")
-# st.write(f"AEP: {aep_with_wake:.2f} GWh")
-# st.write(f"Total wake loss: {wake_effects:.2f}%")
-#
-# # Plot the layout
-# plot_layout(farm)
-#
-# # User inputs for wind speed and direction
-# wsp = st.slider('Wind Speed (m/s)',
-#                 min_value=3.0,
-#                 max_value=25.0,
-#                 value=11.0,
-#                 step=farm.site.ds.ws.__array__()[1] - farm.site.ds.ws.__array__()[0])
-# wdir = st.slider('Wind Direction (degrees)',
-#                  min_value=0.0,
-#                  max_value=360.0,
-#                  value=0.0,
-#                  step=farm.site.ds.wd.__array__()[1] - farm.site.ds.wd.__array__()[0])
-# local_wake_loss = plot_wake_map(farm, wdir, wsp)
-# st.write(f"local wake effect = {local_wake_loss}%")
+# Load initial layout properties
+with open(layout_properties_file, 'r') as file:
+    layout_properties = yaml.safe_load(file)
+
+
+farm = Farm()
+farm.create_layout(layout_type="standard",
+                   layout_properties=layout_properties,
+                   mooring_orientation="DMO_03",
+                   trtle=None,
+                   capacity_constraint=False)
+farm_properties = layout_properties["farm properties"]
+farm.complex_site()
+
+aep_without_wake, aep_with_wake, wake_effects = farm.wake_model(watch_circle=False)
+
+# User inputs for coefficients
+Sx = st.number_input(fr"$S_x$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingy"], step=0.1)
+Sy = st.number_input(fr"$S_y$", min_value=4.0, max_value=12.0, value=farm_properties["Dspacingx"], step=0.1)
+# delta_x_coefficient = st.slider('Delta X Coefficient', -1.0, 1.0, 0.0)
+# delta_y_coefficient = st.slider('Delta Y Coefficient', -1.0, 1.0, 0.0)
+alpha = st.number_input(rf'$\alpha$ (degrees)',
+                        min_value=0.0,
+                        max_value=360.0,
+                        value=float(layout_properties["farm properties"]["orientation"]))
+beta = st.number_input(rf'$\beta$ (degrees)',
+                        min_value=0.0,
+                        max_value=np.rad2deg(np.arctan2(Sy, Sx)),
+                        value=0.0)
+gamma = st.number_input(rf'$\Delta \gamma$ (degrees)',
+                        min_value=0.0,
+                        max_value=360.0,
+                        value=0.0)
+
+# Update layout based on user input
+layout_properties['farm properties']['Dspacingx'] = Sy
+layout_properties['farm properties']['Dspacingy'] = Sx
+layout_properties["farm properties"]["orientation"] = 90 - alpha
+layout_properties["farm properties"]["skew factor"] = np.tan(np.deg2rad(beta))*farm.spacing_x/farm.spacing_y
+
+# Commit changes
+# change_center(farm, delta_x_coefficient, delta_y_coefficient)
+farm, aep_with_wake, wake_effects = update_farm(layout_properties)
+change_gamma(farm, gamma)
+
+st.write(f"Turbine Count = {farm.turbine_ct}, Capacity = {15 * farm.turbine_ct} MW")
+st.write(f"AEP: {aep_with_wake:.2f} GWh")
+st.write(f"Total wake loss: {wake_effects:.2f}%")
+
+# Plot the layout
+plot_layout(farm)
+
+# User inputs for wind speed and direction
+wsp = st.slider('Wind Speed (m/s)',
+                min_value=3.0,
+                max_value=25.0,
+                value=11.0,
+                step=farm.site.ds.ws.__array__()[1] - farm.site.ds.ws.__array__()[0])
+wdir = st.slider('Wind Direction (degrees)',
+                 min_value=0.0,
+                 max_value=360.0,
+                 value=0.0,
+                 step=farm.site.ds.wd.__array__()[1] - farm.site.ds.wd.__array__()[0])
+local_wake_loss = plot_wake_map(farm, wdir, wsp)
+st.write(f"local wake effect = {local_wake_loss}%")
