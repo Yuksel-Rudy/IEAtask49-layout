@@ -6,5 +6,4 @@ shapely
 pandas
 scipy
 xarray
-PyWake
 py_wake
