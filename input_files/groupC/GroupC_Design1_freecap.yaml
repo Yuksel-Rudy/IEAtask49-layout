@@ -1,0 +1,15 @@
+name: groupC (Standard Spacing)
+turbine: "IEA15MW"
+boundary_file_path: "../data/layouts/farm_boundary/Humboldt_C_NE_sq_eq.csv"  # relative to the python script file
+wind_resource_file: "../data/energy_resources/Humboldt/wind_resource_Humboldt_nsector=180.yaml" # relative to the python script file
+farm properties:
+    capacity: 1500  # [MW]  # fitting 67 turbines
+    Dspacingx: 7.09
+    Dspacingy: 6.42
+    orientation: 60  # [deg]
+    skew factor: 0.0  # [-]
+    turbine-boundary limit: 1400  # [m]
+    mooring line spread radius: 1400  # [m] 
+    
+    
+    
