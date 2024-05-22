@@ -144,8 +144,8 @@ layout_properties["farm properties"]["mooring line spread radius"] = msr
 layout_properties["farm properties"]["turbine-boundary limit"] = tbl
 
 # Commit changes
-change_center(farm, delta_x_coefficient, delta_y_coefficient)
 farm, aep_with_wake, wake_effects = update_farm(layout_properties)
+change_center(farm, delta_x_coefficient, delta_y_coefficient)
 change_gamma(farm, gamma)
 
 
