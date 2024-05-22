@@ -7,7 +7,7 @@ import numpy as np
 from scipy.interpolate import NearestNDInterpolator
 import xarray as xr
 from py_wake.site import XRSite
-from py_wake.literature.gaussian_models import Niayifar_PorteAgel_2016
+from PyWake.py_wake.literature.gaussian_models import Niayifar_PorteAgel_2016
 
 
 class Farm:
