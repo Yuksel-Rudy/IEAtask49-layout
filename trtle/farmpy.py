@@ -50,7 +50,7 @@ class Farm:
         self.layout_x = list(df["layout_x"])
         self.layout_y = list(df["layout_y"])
 
-    def create_layout(self, layout_type, layout_properties, mooring_orientation, trtle, capacity_constraint=True):
+    def create_layout(self, layout_type, layout_properties, mooring_orientation, trtle, capacity_constraint=True, boundary=None):
         # turbine selection
         turbine_type = layout_properties["turbine"]
 
@@ -59,7 +59,7 @@ class Farm:
             self.WTG = IEA15MW()
 
         # farm boundaries
-        self.farm_boundaries(layout_properties["boundary_file_path"])
+        self.farm_boundaries(layout_properties["boundary_file_path"], boundary)
 
         # energy resources
         self.wind_resource_file = layout_properties["wind_resource_file"]
@@ -73,8 +73,10 @@ class Farm:
             raise ValueError("The layout type specified is not supported!")
         pass
 
-    def farm_boundaries(self, boundary_file_path):
-        boundary = pd.read_csv(boundary_file_path)
+    def farm_boundaries(self, boundary_file_path, boundary=None):
+        if boundary is None:
+            boundary = pd.read_csv(boundary_file_path)
+
         self.boundary_x = list(boundary['boundary_x'])
         self.boundary_y = list(boundary['boundary_y'])
         self.oboundary_x = list(boundary['boundary_x'])

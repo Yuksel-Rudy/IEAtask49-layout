@@ -8,9 +8,9 @@ import yaml
 import matplotlib.pyplot as plt
 import numpy as np
 from trtle.farmpy import Farm
-
+import pandas as pd
 """
-Streamlit App Development for groupC: (Various mooring orientations, with No shared anchors) - Powered by TRTLE: https://github.com/Yuksel-Rudy/TRTLE
+Streamlit App Development for general layout purpose - Powered by TRTLE: https://github.com/Yuksel-Rudy/TRTLE
 """
 
 # Define a function to plot the layout
@@ -23,23 +23,30 @@ def plot_layout(farm):
 
     plt.gca().set_axisbelow(True)
     plt.axis("equal")
-    plt.plot(farm.oboundary_x, farm.oboundary_y, label="farm boundary")
+    if len(farm.oboundary_x) > 5:
+        plt.scatter(farm.oboundary_x, farm.oboundary_y, label="farm boundary")
+    else:
+        plt.plot(farm.oboundary_x, farm.oboundary_y, label="farm boundary")
     plt.xlabel("Easting [m]")
     plt.ylabel("Northing [m]")
 
-    for idx, (x, y) in enumerate(zip(farm.layout_x, farm.layout_y)):
-        plt.text(x, y, f' {idx}', color='red', verticalalignment='bottom', horizontalalignment='right')
+    # for idx, (x, y) in enumerate(zip(farm.layout_x, farm.layout_y)):
+    #     plt.text(x, y, f' {idx}', color='red', verticalalignment='bottom', horizontalalignment='right')
 
     st.pyplot(plt)
 
 
 def update_farm(layout_properties):
+    if boundary_file is not None:
+        boundary = pd.read_csv(boundary_file)
+
     farm = Farm()
     farm.create_layout(layout_type="standard",
                        layout_properties=layout_properties,
                        mooring_orientation="DMO_03",
                        trtle=None,
-                       capacity_constraint=False)
+                       capacity_constraint=False,
+                       boundary=boundary)
     farm.complex_site()
     aep_without_wake, aep_with_wake, wake_effects = farm.wake_model(watch_circle=False)
     return farm, aep_with_wake, wake_effects
@@ -87,11 +94,11 @@ def plot_wake_map(farm, wdir, wsp):
 
 
 # Streamlit app
-st.title("IEA Task 49 - Wind Farm Layout Design & Visualization")
+st.title("Wind Farm Layout Design & Visualization")
+boundary_file = st.file_uploader("To update the wind energy area, upload farm boundary CSV file", type=["csv"])
+TEST_NAME = 'general_layout'
 
-TEST_NAME = 'groupC_OPT_st'
-
-layout_properties_file = os.path.join(os.path.dirname(__file__), "input_files", "groupC", "GroupC_Design1_freecap.yaml")
+layout_properties_file = os.path.join(os.path.dirname(__file__), "input_files", "general", "rect_freecap.yaml")
 
 VESSEL = 'VolturnUS-S'
 DELTATHETA = 30.0
@@ -146,6 +153,7 @@ with col3:
     delta_y_coefficient = st.slider(fr'$\Delta y/D$: center adjustment in y-axis [-]', -10.0, 10.0, 0.0)
 
 # Update layout based on user input
+
 layout_properties['farm properties']['Dspacingx'] = Sy
 layout_properties['farm properties']['Dspacingy'] = Sx
 layout_properties["farm properties"]["orientation"] = 90 - alpha
@@ -157,10 +165,6 @@ layout_properties["farm properties"]["turbine-boundary limit"] = tbl
 farm, aep_with_wake, wake_effects = update_farm(layout_properties)
 change_center(farm, delta_x_coefficient, delta_y_coefficient)
 change_gamma(farm, gamma)
-
-
-
-
 
 # Plot the layout
 plot_layout(farm)
