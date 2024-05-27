@@ -737,8 +737,6 @@ class Farm:
     def anchor_position(self, N_m):
         Ax = np.zeros([N_m, len(self.layout_x)])
         Ay = np.zeros([N_m, len(self.layout_x)])
-        print(len(self.layout_x))
-        print(len(self.turbines.values()))
         # Anchor Positions
         for i, turbine in enumerate(self.turbines.values()):
             for j in range(N_m):

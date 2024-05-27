@@ -148,9 +148,9 @@ with col2:
                             value=0.0)
 
 with col3:
-    msr = st.number_input(fr"$R_a$: anchor radius (m)", min_value=0.0, max_value=1400.0,
+    msr = st.number_input(fr"$R_a$: anchor radius (m)", min_value=0.0, max_value=5e3,
                           value=float(farm_properties["mooring line spread radius"]), step=1.0)
-    tbl = st.number_input(fr"$R_b$: turbine-boundary limit (m)", min_value=0.0, max_value=1400.0,
+    tbl = st.number_input(fr"$R_b$: turbine-boundary limit (m)", min_value=0.0, max_value=5e3,
                           value=float(farm_properties["turbine-boundary limit"]), step=1.0)
     delta_y_coefficient = st.slider(fr'$\Delta y/D$: center adjustment in y-axis [-]', -10.0, 10.0, 0.0)
 
