@@ -39,6 +39,8 @@ def plot_layout(farm):
 def update_farm(layout_properties):
     if boundary_file is not None:
         boundary = pd.read_csv(boundary_file)
+    else:
+        boundary = None
 
     farm = Farm()
     farm.create_layout(layout_type="standard",
