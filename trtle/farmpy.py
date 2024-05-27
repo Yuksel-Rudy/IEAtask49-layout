@@ -249,6 +249,7 @@ class Farm:
         self.populate_turbine_keys(tbls, msrs, moris)
 
         # Check if anchors all exist inside the farm
+        # TODO: Careful here, N_m = 3 is hardcoded.
         N_m = 3
         self.mooring_standard_layout(N_m=N_m, mooring_orientation=mooring_orientation)
         self.anchor_position(N_m=N_m)
@@ -278,7 +279,20 @@ class Farm:
         self.capacity = self.turbine_ct * pow
 
         # turbine count (second check):
-        print(f"After anchor check: capacity that can fit in the site is {self.capacity} MW ({len(layout_x)} turbines)")
+        print(f"After anchor check: capacity that can fit in the site is {self.capacity} MW ({len(self.layout_x)} turbines)")
+
+        msrs = np.zeros(len(self.layout_x)) + new_msr
+        tbls = np.zeros(len(self.layout_x)) + tbl
+        moris = np.zeros(len(self.layout_x))
+        self.populate_turbine_keys(tbls, msrs, moris)
+        self.mooring_standard_layout(N_m=N_m, mooring_orientation=mooring_orientation)
+        self.anchor_position(N_m=N_m)
+
+        anchor_points_x, anchor_points_y = [], []
+        for i, turbine in enumerate(self.turbines.values()):
+            for j in range(N_m):
+                anchor_points_x.append(turbine[f"anchor{j}_x"])
+                anchor_points_y.append(turbine[f"anchor{j}_y"])
 
         if capacity_constraint:
             if len(self.layout_x) < turbine_ct:
@@ -566,6 +580,7 @@ class Farm:
                 self.add_update_turbine_keys(i, "mori", (270 + self.orient) % 360)
 
     def populate_turbine_keys(self, tbls, msrs, moris):
+        self.turbines = {}
         for idx, (x, y, tbl, msr, mori) in enumerate(zip(self.layout_x, self.layout_y, tbls, msrs, moris)):
             self.turbines[idx] = {
                 'ID': idx,  # turbine ID
@@ -722,6 +737,8 @@ class Farm:
     def anchor_position(self, N_m):
         Ax = np.zeros([N_m, len(self.layout_x)])
         Ay = np.zeros([N_m, len(self.layout_x)])
+        print(len(self.layout_x))
+        print(len(self.turbines.values()))
         # Anchor Positions
         for i, turbine in enumerate(self.turbines.values()):
             for j in range(N_m):
